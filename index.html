@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="mr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>मराठी Quiz App</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f4f8;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .quiz-box {
+      max-width: 500px;
+      margin: 30px auto;
+      background: white;
+      padding: 25px;
+      border-radius: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+      color: #222;
+    }
+
+    #question {
+      font-size: 22px;
+      margin: 25px 0;
+      font-weight: bold;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 10px;
+      background: #1976d2;
+      color: white;
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #125ca5;
+    }
+
+    #result {
+      font-size: 22px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+
+    #nextBtn {
+      background: #2e7d32;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="quiz-box">
+
+    <h1>🧠 मराठी Quiz</h1>
+
+    <p id="progress"></p>
+
+    <div id="question"></div>
+
+    <div id="answers"></div>
+
+    <p id="result"></p>
+
+    <button id="nextBtn" onclick="nextQuestion()" style="display:none;">
+      पुढचा प्रश्न ➡️
+    </button>
+
+  </div>
+
+<script>
+
+const questions = [
+
+  {
+    question: "महाराष्ट्राची राजधानी कोणती?",
+    answers: ["पुणे", "मुंबई", "नाशिक", "नागपूर"],
+    correct: 1
+  },
+
+  {
+    question: "भारताचा राष्ट्रीय पक्षी कोणता?",
+    answers: ["गरुड", "मोर", "कबूतर", "पोपट"],
+    correct: 1
+  },
+
+  {
+    question: "भारताचा राष्ट्रीय प्राणी कोणता?",
+    answers: ["सिंह", "हत्ती", "वाघ", "हरिण"],
+    correct: 2
+  },
+
+  {
+    question: "भारताचा स्वातंत्र्य दिन कधी साजरा केला जातो?",
+    answers: ["15 ऑगस्ट", "26 जानेवारी", "2 ऑक्टोबर", "14 एप्रिल"],
+    correct: 0
+  },
+
+  {
+    question: "महाराष्ट्र दिन कधी साजरा केला जातो?",
+    answers: ["1 मे", "15 ऑगस्ट", "26 जानेवारी", "1 जानेवारी"],
+    correct: 0
+  }
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+function loadQuestion() {
+
+  const q = questions[currentQuestion];
+
+  document.getElementById("progress").innerText =
+    "प्रश्न " + (currentQuestion + 1) + " / " + questions.length;
+
+  document.getElementById("question").innerText = q.question;
+
+  const answersDiv = document.getElementById("answers");
+  answersDiv.innerHTML = "";
+
+  document.getElementById("result").innerText = "";
+
+  document.getElementById("nextBtn").style.display = "none";
+
+  q.answers.forEach((answer, index) => {
+
+    const button = document.createElement("button");
+
+    button.innerText = answer;
+
+    button.onclick = function() {
+      checkAnswer(index);
+    };
+
+    answersDiv.appendChild(button);
+
+  });
+}
+
+function checkAnswer(selected) {
+
+  const q = questions[currentQuestion];
+
+  const buttons = document.querySelectorAll("#answers button");
+
+  buttons.forEach(button => {
+    button.disabled = true;
+  });
+
+  if (selected === q.correct) {
+
+    score++;
+
+    document.getElementById("result").innerText =
+      "✅ बरोबर उत्तर!";
+
+  } else {
+
+    document.getElementById("result").innerText =
+      "❌ चुकीचे उत्तर!";
+
+  }
+
+  document.getElementById("nextBtn").style.display = "block";
+}
+
+function nextQuestion() {
+
+  currentQuestion++;
+
+  if (currentQuestion < questions.length) {
+
+    loadQuestion();
+
+  } else {
+
+    document.querySelector(".quiz-box").innerHTML =
+
+      "<h1>🎉 Quiz पूर्ण!</h1>" +
+
+      "<p id='result'>तुमचा Score: " +
+      score + " / " + questions.length +
+      "</p>" +
+
+      "<button onclick='location.reload()'>" +
+      "पुन्हा खेळा 🔄" +
+      "</button>";
+
+  }
+
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+  </html>
