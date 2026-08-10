@@ -1,212 +1,651 @@
 <!DOCTYPE html>
 <html lang="mr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>मराठी Quiz App</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f2f4f8;
-      margin: 0;
-      padding: 20px;
-      text-align: center;
-    }
+<title>मराठी Quiz App</title>
 
-    .quiz-box {
-      max-width: 500px;
-      margin: 30px auto;
-      background: white;
-      padding: 25px;
-      border-radius: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    }
+<style>
 
-    h1 {
-      color: #222;
-    }
+*{
+  box-sizing:border-box;
+}
 
-    #question {
-      font-size: 22px;
-      margin: 25px 0;
-      font-weight: bold;
-    }
+body{
+  font-family:Arial,"Noto Sans Devanagari",sans-serif;
+  background:linear-gradient(135deg,#eef4ff,#f8f9ff);
+  margin:0;
+  padding:15px;
+  text-align:center;
+  color:#222;
+}
 
-    button {
-      width: 100%;
-      padding: 14px;
-      margin: 8px 0;
-      border: none;
-      border-radius: 10px;
-      background: #1976d2;
-      color: white;
-      font-size: 17px;
-      cursor: pointer;
-    }
+.quiz-box{
+  max-width:560px;
+  margin:20px auto;
+  background:white;
+  padding:25px;
+  border-radius:22px;
+  box-shadow:0 8px 30px rgba(0,0,0,0.12);
+}
 
-    button:hover {
-      background: #125ca5;
-    }
+h1{
+  margin:5px 0 15px;
+  font-size:30px;
+}
 
-    #result {
-      font-size: 22px;
-      font-weight: bold;
-      margin: 20px 0;
-    }
+#progress{
+  color:#666;
+  font-weight:bold;
+}
 
-    #nextBtn {
-      background: #2e7d32;
-    }
-  </style>
+#question{
+  font-size:23px;
+  line-height:1.5;
+  margin:25px 0;
+  font-weight:bold;
+}
+
+button{
+  width:100%;
+  padding:15px;
+  margin:8px 0;
+  border:none;
+  border-radius:12px;
+  background:#1976d2;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#125ca5;
+}
+
+button:disabled{
+  opacity:.9;
+}
+
+#result{
+  font-size:21px;
+  font-weight:bold;
+  margin:20px 0;
+  min-height:30px;
+}
+
+#nextBtn{
+  background:#2e7d32;
+}
+
+.ad-box{
+  margin-top:20px;
+  padding:12px;
+  border:1px dashed #aaa;
+  border-radius:10px;
+  color:#888;
+  font-size:14px;
+}
+
+.score{
+  font-size:45px;
+  font-weight:bold;
+  color:#1976d2;
+  margin:20px 0;
+}
+
+@media(max-width:480px){
+
+  body{
+    padding:8px;
+  }
+
+  .quiz-box{
+    margin:10px auto;
+    padding:18px;
+  }
+
+  h1{
+    font-size:27px;
+  }
+
+  #question{
+    font-size:20px;
+  }
+
+  button{
+    font-size:17px;
+  }
+
+}
+
+</style>
 </head>
 
 <body>
 
-  <div class="quiz-box">
+<div class="quiz-box">
 
-    <h1>🧠 मराठी Quiz</h1>
+<h1>🧠 मराठी Quiz</h1>
 
-    <p id="progress"></p>
+<p id="progress"></p>
 
-    <div id="question"></div>
+<div id="question"></div>
 
-    <div id="answers"></div>
+<div id="answers"></div>
 
-    <p id="result"></p>
+<p id="result"></p>
 
-    <button id="nextBtn" onclick="nextQuestion()" style="display:none;">
-      पुढचा प्रश्न ➡️
-    </button>
+<button id="nextBtn"
+onclick="nextQuestion()"
+style="display:none;">
+पुढचा प्रश्न ➡️
+</button>
 
-  </div>
+<div class="ad-box">
+जाहिरातीसाठी जागा
+</div>
+
+</div>
+
 
 <script>
 
 const questions = [
 
-  {
-    question: "महाराष्ट्राची राजधानी कोणती?",
-    answers: ["पुणे", "मुंबई", "नाशिक", "नागपूर"],
-    correct: 1
-  },
+{
+question:"महाराष्ट्राची राजधानी कोणती?",
+answers:["पुणे","मुंबई","नाशिक","नागपूर"],
+correct:1
+},
 
-  {
-    question: "भारताचा राष्ट्रीय पक्षी कोणता?",
-    answers: ["गरुड", "मोर", "कबूतर", "पोपट"],
-    correct: 1
-  },
+{
+question:"भारताचा राष्ट्रीय पक्षी कोणता?",
+answers:["गरुड","मोर","कबूतर","पोपट"],
+correct:1
+},
 
-  {
-    question: "भारताचा राष्ट्रीय प्राणी कोणता?",
-    answers: ["सिंह", "हत्ती", "वाघ", "हरिण"],
-    correct: 2
-  },
+{
+question:"भारताचा राष्ट्रीय प्राणी कोणता?",
+answers:["सिंह","हत्ती","वाघ","हरिण"],
+correct:2
+},
 
-  {
-    question: "भारताचा स्वातंत्र्य दिन कधी साजरा केला जातो?",
-    answers: ["15 ऑगस्ट", "26 जानेवारी", "2 ऑक्टोबर", "14 एप्रिल"],
-    correct: 0
-  },
+{
+question:"भारताचा स्वातंत्र्य दिन कधी साजरा केला जातो?",
+answers:["15 ऑगस्ट","26 जानेवारी","2 ऑक्टोबर","14 एप्रिल"],
+correct:0
+},
 
-  {
-    question: "महाराष्ट्र दिन कधी साजरा केला जातो?",
-    answers: ["1 मे", "15 ऑगस्ट", "26 जानेवारी", "1 जानेवारी"],
-    correct: 0
-  }
+{
+question:"महाराष्ट्र दिन कधी साजरा केला जातो?",
+answers:["1 मे","15 ऑगस्ट","26 जानेवारी","1 जानेवारी"],
+correct:0
+},
+
+{
+question:"भारताचे राष्ट्रीय फूल कोणते?",
+answers:["गुलाब","कमळ","जाई","सूर्यफूल"],
+correct:1
+},
+
+{
+question:"भारताचे राष्ट्रीय फळ कोणते?",
+answers:["केळी","आंबा","सफरचंद","संत्रे"],
+correct:1
+},
+
+{
+question:"भारताचे राष्ट्रगीत कोणते?",
+answers:["वंदे मातरम्","जन गण मन","सारे जहाँ से अच्छा","ऐ मेरे वतन"],
+correct:1
+},
+
+{
+question:"भारताचे राष्ट्रीय गीत कोणते?",
+answers:["जन गण मन","वंदे मातरम्","जय हे","सारे जहाँ से अच्छा"],
+correct:1
+},
+
+{
+question:"भारतीय संविधान दिन कधी साजरा केला जातो?",
+answers:["26 नोव्हेंबर","26 जानेवारी","15 ऑगस्ट","1 मे"],
+correct:0
+},
+
+{
+question:"महाराष्ट्राची उपराजधानी कोणती?",
+answers:["नागपूर","पुणे","नाशिक","कोल्हापूर"],
+correct:0
+},
+
+{
+question:"गोदावरी नदीचा उगम कुठे होतो?",
+answers:["महाबळेश्वर","त्र्यंबकेश्वर","लोणावळा","माथेरान"],
+correct:1
+},
+
+{
+question:"महाराष्ट्रातील सर्वात उंच शिखर कोणते?",
+answers:["कळसूबाई","राजगड","तोरणा","प्रतापगड"],
+correct:0
+},
+
+{
+question:"छत्रपती शिवाजी महाराजांचा जन्म कोणत्या किल्ल्यावर झाला?",
+answers:["रायगड","शिवनेरी","प्रतापगड","सिंहगड"],
+correct:1
+},
+
+{
+question:"छत्रपती शिवाजी महाराजांची राजधानी कोणती होती?",
+answers:["रायगड","पुणे","सातारा","नाशिक"],
+correct:0
+},
+
+{
+question:"भारताचे पहिले राष्ट्रपती कोण होते?",
+answers:["डॉ. राजेंद्र प्रसाद","डॉ. बाबासाहेब आंबेडकर","जवाहरलाल नेहरू","सरदार पटेल"],
+correct:0
+},
+
+{
+question:"भारताचे पहिले पंतप्रधान कोण होते?",
+answers:["महात्मा गांधी","जवाहरलाल नेहरू","लालबहादूर शास्त्री","सरदार पटेल"],
+correct:1
+},
+
+{
+question:"भारतीय संविधानाचे शिल्पकार म्हणून कोणाला ओळखले जाते?",
+answers:["महात्मा गांधी","डॉ. बाबासाहेब आंबेडकर","सुभाषचंद्र बोस","लोकमान्य टिळक"],
+correct:1
+},
+
+{
+question:"महात्मा गांधींचा जन्मदिन कधी असतो?",
+answers:["2 ऑक्टोबर","14 एप्रिल","15 ऑगस्ट","26 जानेवारी"],
+correct:0
+},
+
+{
+question:"डॉ. बाबासाहेब आंबेडकरांचा जन्मदिन कधी साजरा केला जातो?",
+answers:["14 एप्रिल","1 मे","2 ऑक्टोबर","26 नोव्हेंबर"],
+correct:0
+},
+
+{
+question:"महाराष्ट्रातील प्रसिद्ध लेणी कोणती?",
+answers:["अजिंठा-वेरूळ","सांची","खजुराहो","कोणार्क"],
+correct:0
+},
+
+{
+question:"अजिंठा लेणी कोणत्या जिल्ह्यात आहेत?",
+answers:["छत्रपती संभाजीनगर","पुणे","नाशिक","सातारा"],
+correct:0
+},
+
+{
+question:"वेरूळ लेणी कोणत्या जिल्ह्यात आहेत?",
+answers:["नाशिक","छत्रपती संभाजीनगर","सोलापूर","रत्नागिरी"],
+correct:1
+},
+
+{
+question:"महाराष्ट्राची अधिकृत भाषा कोणती?",
+answers:["हिंदी","मराठी","गुजराती","कन्नड"],
+correct:1
+},
+
+{
+question:"मराठी भाषा कोणत्या लिपीत प्रामुख्याने लिहिली जाते?",
+answers:["देवनागरी","रोमन","गुरुमुखी","तमिळ"],
+correct:0
+},
+
+{
+question:"महाराष्ट्रातील प्रसिद्ध समुद्रकिनारा कोणता?",
+answers:["गणपतीपुळे","मनाली","शिमला","ऋषिकेश"],
+correct:0
+},
+
+{
+question:"ताजमहाल कोणत्या शहरात आहे?",
+answers:["दिल्ली","आग्रा","मुंबई","जयपूर"],
+correct:1
+},
+
+{
+question:"भारताची राजधानी कोणती?",
+answers:["मुंबई","नवी दिल्ली","कोलकाता","चेन्नई"],
+correct:1
+},
+
+{
+question:"भारताचे चलन कोणते?",
+answers:["रुपया","डॉलर","युरो","पाउंड"],
+correct:0
+},
+
+{
+question:"पृथ्वीचा नैसर्गिक उपग्रह कोणता?",
+answers:["सूर्य","चंद्र","मंगळ","शुक्र"],
+correct:1
+},
+
+{
+question:"सूर्यमालेतील सर्वात मोठा ग्रह कोणता?",
+answers:["पृथ्वी","गुरू","शनि","मंगळ"],
+correct:1
+},
+
+{
+question:"लाल ग्रह म्हणून कोणत्या ग्रहाला ओळखले जाते?",
+answers:["मंगळ","शुक्र","बुध","गुरू"],
+correct:0
+},
+
+{
+question:"पाण्याचे रासायनिक सूत्र काय आहे?",
+answers:["CO2","H2O","O2","NaCl"],
+correct:1
+},
+
+{
+question:"मानवी शरीरात रक्त पंप करणारा अवयव कोणता?",
+answers:["फुफ्फुसे","हृदय","यकृत","मेंदू"],
+correct:1
+},
+
+{
+question:"मानवी शरीरातील सर्वात मोठा अवयव कोणता?",
+answers:["हृदय","त्वचा","मेंदू","यकृत"],
+correct:1
+},
+
+{
+question:"वनस्पती प्रकाशसंश्लेषणासाठी कोणता वायू घेतात?",
+answers:["ऑक्सिजन","कार्बन डायऑक्साइड","नायट्रोजन","हायड्रोजन"],
+correct:1
+},
+
+{
+question:"सूर्य कोणत्या दिशेला उगवतो?",
+answers:["पश्चिम","उत्तर","पूर्व","दक्षिण"],
+correct:2
+},
+
+{
+question:"एका आठवड्यात किती दिवस असतात?",
+answers:["5","6","7","8"],
+correct:2
+},
+
+{
+question:"एका वर्षात किती महिने असतात?",
+answers:["10","11","12","13"],
+correct:2
+},
+
+{
+question:"1000 मीटर म्हणजे किती किलोमीटर?",
+answers:["1","10","100","0.1"],
+correct:0
+},
+
+{
+question:"2 + 3 = ?",
+answers:["4","5","6","7"],
+correct:1
+},
+
+{
+question:"10 × 5 = ?",
+answers:["15","50","55","100"],
+correct:1
+},
+
+{
+question:"50 ÷ 10 = ?",
+answers:["2","5","10","20"],
+correct:1
+},
+
+{
+question:"मराठीतील स्वरांपैकी एक कोणता?",
+answers:["क","अ","ट","म"],
+correct:1
+},
+
+{
+question:"‘पाणी’ या शब्दाचा समानार्थी शब्द कोणता?",
+answers:["जल","अग्नी","वारा","आकाश"],
+correct:0
+},
+
+{
+question:"‘मोठा’ या शब्दाचा विरुद्धार्थी शब्द कोणता?",
+answers:["उंच","लहान","जाड","लांब"],
+correct:1
+},
+
+{
+question:"‘सुंदर’ या शब्दाचा विरुद्धार्थी शब्द कोणता?",
+answers:["चांगला","कुरूप","गोड","मोठा"],
+correct:1
+},
+
+{
+question:"‘आई’ या शब्दाचे इंग्रजी रूप कोणते?",
+answers:["Father","Mother","Sister","Brother"],
+correct:1
+},
+
+{
+question:"‘पुस्तक’ या शब्दाचे इंग्रजी रूप कोणते?",
+answers:["Pen","Book","School","Table"],
+correct:1
+},
+
+{
+question:"‘शाळा’ या शब्दाचे इंग्रजी रूप कोणते?",
+answers:["School","Home","Market","Road"],
+correct:0
+},
+
+{
+question:"महाराष्ट्राचे राज्यप्राणी कोणते?",
+answers:["शेकरू","वाघ","सिंह","हरिण"],
+correct:0
+},
+
+{
+question:"महाराष्ट्राचा राज्यपक्षी कोणता?",
+answers:["मोर","हरियाल","गरुड","पोपट"],
+correct:1
+}
 
 ];
 
+
 let currentQuestion = 0;
 let score = 0;
+let answered = false;
 
-function loadQuestion() {
 
-  const q = questions[currentQuestion];
+function loadQuestion(){
 
-  document.getElementById("progress").innerText =
-    "प्रश्न " + (currentQuestion + 1) + " / " + questions.length;
+const q = questions[currentQuestion];
 
-  document.getElementById("question").innerText = q.question;
+answered = false;
 
-  const answersDiv = document.getElementById("answers");
-  answersDiv.innerHTML = "";
+document.getElementById("progress").innerText =
+"प्रश्न " +
+(currentQuestion + 1) +
+" / " +
+questions.length;
 
-  document.getElementById("result").innerText = "";
+document.getElementById("question").innerText =
+q.question;
 
-  document.getElementById("nextBtn").style.display = "none";
+document.getElementById("result").innerText = "";
 
-  q.answers.forEach((answer, index) => {
+const answersDiv =
+document.getElementById("answers");
 
-    const button = document.createElement("button");
+answersDiv.innerHTML = "";
 
-    button.innerText = answer;
+document.getElementById("nextBtn")
+.style.display = "none";
 
-    button.onclick = function() {
-      checkAnswer(index);
-    };
 
-    answersDiv.appendChild(button);
+q.answers.forEach((answer,index)=>{
 
-  });
-}
+const button =
+document.createElement("button");
 
-function checkAnswer(selected) {
+button.innerText = answer;
 
-  const q = questions[currentQuestion];
+button.onclick = function(){
 
-  const buttons = document.querySelectorAll("#answers button");
+checkAnswer(index);
 
-  buttons.forEach(button => {
-    button.disabled = true;
-  });
+};
 
-  if (selected === q.correct) {
+answersDiv.appendChild(button);
 
-    score++;
-
-    document.getElementById("result").innerText =
-      "✅ बरोबर उत्तर!";
-
-  } else {
-
-    document.getElementById("result").innerText =
-      "❌ चुकीचे उत्तर!";
-
-  }
-
-  document.getElementById("nextBtn").style.display = "block";
-}
-
-function nextQuestion() {
-
-  currentQuestion++;
-
-  if (currentQuestion < questions.length) {
-
-    loadQuestion();
-
-  } else {
-
-    document.querySelector(".quiz-box").innerHTML =
-
-      "<h1>🎉 Quiz पूर्ण!</h1>" +
-
-      "<p id='result'>तुमचा Score: " +
-      score + " / " + questions.length +
-      "</p>" +
-
-      "<button onclick='location.reload()'>" +
-      "पुन्हा खेळा 🔄" +
-      "</button>";
-
-  }
+});
 
 }
+
+
+function checkAnswer(selected){
+
+if(answered) return;
+
+answered = true;
+
+const q = questions[currentQuestion];
+
+const buttons =
+document.querySelectorAll("#answers button");
+
+
+buttons.forEach((button,index)=>{
+
+button.disabled = true;
+
+if(index === q.correct){
+
+button.style.background = "#2e7d32";
+
+}
+
+if(index === selected &&
+selected !== q.correct){
+
+button.style.background = "#d32f2f";
+
+}
+
+});
+
+
+if(selected === q.correct){
+
+score++;
+
+document.getElementById("result")
+.innerText =
+"✅ बरोबर उत्तर!";
+
+}else{
+
+document.getElementById("result")
+.innerText =
+"❌ चुकीचे उत्तर!";
+
+}
+
+
+document.getElementById("nextBtn")
+.style.display = "block";
+
+}
+
+
+function nextQuestion(){
+
+currentQuestion++;
+
+
+if(currentQuestion < questions.length){
+
+loadQuestion();
+
+}else{
+
+const percent =
+Math.round(
+(score / questions.length) * 100
+);
+
+
+let message;
+
+if(percent >= 80){
+
+message =
+"🏆 उत्कृष्ट कामगिरी!";
+
+}else if(percent >= 50){
+
+message =
+"👏 छान प्रयत्न!";
+
+}else{
+
+message =
+"💪 पुन्हा खेळा आणि स्कोअर वाढवा!";
+
+}
+
+
+document.querySelector(".quiz-box")
+.innerHTML =
+
+"<h1>🎉 Quiz पूर्ण!</h1>" +
+
+"<div class='score'>" +
+score +
+" / " +
+questions.length +
+"</div>" +
+
+"<p><b>तुमचा Score: " +
+percent +
+"%</b></p>" +
+
+"<p>" +
+message +
+"</p>" +
+
+"<button onclick='location.reload()'>" +
+"🔄 पुन्हा खेळा" +
+"</button>" +
+
+"<div class='ad-box'>" +
+"जाहिरातीसाठी जागा" +
+"</div>";
+
+}
+
+}
+
 
 loadQuestion();
 
 </script>
 
 </body>
-  </html>
+</html>
